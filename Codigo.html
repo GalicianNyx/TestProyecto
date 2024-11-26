@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ejemplo con errores</title>
+    <!-- Error: Meta charset debería estar al principio del head -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- Error: Inline CSS en lugar de usar un archivo externo -->
+    <style>
+        body { background-color: #fff; font-family: Arial; }
+    </style>
+</head>
+<body>
+    <!-- Error: Uso de atributos obsoletos como "align" -->
+    <h1 align="center">Bienvenido</h1>
+
+    <!-- Error: Falta el atributo alt en la imagen -->
+    <img src="imagen.jpg">
+
+    <!-- Error: Etiqueta no cerrada correctamente -->
+    <p>Este es un párrafo con un enlace
+    <a href="https://ejemplo.com">Visítanos
+
+    <!-- Error: ID duplicado -->
+    <div id="repetido">Div 1</div>
+    <div id="repetido">Div 2</div>
+
+    <!-- Error: Uso incorrecto de etiquetas -->
+    <ul>
+        <li>Elemento de lista mal cerrado
+        <li>Otro elemento
+    </ul>
+
+    <!-- Error: JavaScript inline no recomendado -->
+    <button onclick="alert('¡Hola!');">Click aquí</button>
+</body>
+</html>
