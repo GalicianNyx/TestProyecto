@@ -1,14 +1,31 @@
 pipeline {
-        agent none
-        stages {
-         
-          stage("build & SonarQube Scanner") {
-            agent any
+    agent any
+    stages {
+        stage('checkout from gitlab') {
             steps {
-              withSonarQubeEnv('Sonar') {
-                sh 'mvn clean package sonar:sonar'
-              }
+                git branch: 'main',
+		        credentialsId: '',
+		        url: 'https://github.com/GalicianNyx/TestProyecto'
             }
-          }
         }
-      }
+        
+        stage('Code Quality'){
+            steps {
+                script {
+                    def scannerHome = tool 'sonarqube';  //global tool configuration http://192.168.1.101:9000/configureTools/
+        			   withSonarQubeEnv("sonar") { //sonarqube server http://192.168.1.101:9000/configure
+        			   sh "${tool("sonar")}/bin/sonar-scanner \
+        			        -Dsonar.projectKey=lumen-ci \
+                                    -Dsonar.sources=. \
+                                    -Dsonar.language=php \
+									-Dsonar.exclusions=vendor \
+                                    -Dsonar.sourceEncoding=UTF-8 \
+                                    -Dsonar.host.url=http://192.168.1.101:9000 \
+                                    -Dsonar.login="
+        				   }
+                }
+            }
+        }
+    }
+}
+
