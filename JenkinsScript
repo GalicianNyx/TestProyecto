@@ -1,65 +1,51 @@
 pipeline {
     agent any
-    environment {
-        GIT_REPO = 'https://github.com/GalicianNyx/TestProyecto'
-        GIT_CREDENTIALS_ID = '' 
-        SONARQUBE_SERVER = 'Sonar' 
-        OWASP_API_KEY = '7f3984g82f5ian3a3hu5754pbi'
-        ZAP_SERVER_URL = 'http://192.168.1.101:8080' 
-    }
+
     stages {
-        stage('Clone Repository') {
+        stage('Clonar Repositorio') {
             steps {
+                script {
+                    echo 'Clonando el repositorio desde GitHub...'
+                }
                 git branch: 'main', 
-                    credentialsId: "${GIT_CREDENTIALS_ID}", 
-                    url: "${GIT_REPO}"
+                    url: 'https://github.com/GalicianNyx/TestProyecto.git'
             }
         }
-        stage('SonarQube Analysis') {
-            environment {
-                SONAR_TOKEN = credentials('Sonar-Token')
-            }
+
+        stage('Análisis de Código con SonarQube') {
             steps {
                 script {
                     echo 'Ejecutando análisis de SonarQube...'
+                }
+                withSonarQubeEnv('SonarQube') {
                     sh """
                     sonar-scanner \
                         -Dsonar.projectKey=TestProyecto \
+                        -Dsonar.sources=. \
                         -Dsonar.host.url=http://192.168.1.101:9000 \
-                        -Dsonar.login=${SONAR_TOKEN}
+                        -Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321
                     """
                 }
             }
         }
-        stage('OWASP ZAP Security Scan') {
+
+        stage('Escaneo de Vulnerabilidades con OWASP ZAP') {
             steps {
                 script {
-                    echo 'Ejecutando análisis de seguridad con OWASP ZAP...'
-                    sh """
-                    curl -X POST "${ZAP_SERVER_URL}/JSON/ascan/action/scan/?url=https://<TU_SITIO_WEB>" \
-                        -H "X-ZAP-API-Key: ${OWASP_API_KEY}"
-                    """
+                    echo 'Ejecutando escaneo con OWASP ZAP...'
                 }
+                sh """
+                zap-cli quick-scan --self-contained http://192.168.1.101:8080
+                """
             }
         }
-        stage('Results') {
+
+        stage('Notificar Resultado') {
             steps {
                 script {
-                    echo 'Pipeline completado con éxito. Revisa los resultados en Jenkins, SonarQube y OWASP ZAP.'
+                    echo 'Notificación: Pipeline finalizado.'
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo 'Limpieza del workspace...'
-            cleanWs() 
-        }
-        success {
-            echo 'Pipeline ejecutado con éxito.'
-        }
-        failure {
-            echo 'El pipeline ha fallado. Revisa los errores.'
         }
     }
 }
