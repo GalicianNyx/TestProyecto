@@ -17,7 +17,7 @@ pipeline {
                 script {
                     echo 'Ejecutando análisis de SonarQube...'
                 }
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('Sonar') {
                     sh """
                     sonar-scanner \
                         -Dsonar.projectKey=TestProyecto \
