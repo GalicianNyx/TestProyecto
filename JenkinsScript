@@ -18,13 +18,11 @@ pipeline {
                     echo 'Ejecutando análisis de SonarQube...'
                 }
                 withSonarQubeEnv('Sonar') {
-                    sh """
-                    sonar-scanner \
-                        -Dsonar.projectKey=TestProyecto \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://192.168.1.101:9000 \
-                        -Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321
-                    """
+                    sh 'export PATH=$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin && ' +
+                   'sonar-scanner -Dsonar.projectKey=TestProyecto ' +
+                   '-Dsonar.sources=. ' +
+                   '-Dsonar.host.url=http://192.168.1.101:9000 ' +
+                   '-Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321'
                 }
             }
         }
