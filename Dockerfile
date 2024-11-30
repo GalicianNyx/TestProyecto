@@ -12,11 +12,15 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m venv /opt/venv
 
 # Activar el entorno virtual e instalar zap-cli dentro del entorno
-RUN /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install git+https://github.com/Grunny/zap-cli.git
+RUN /opt/venv/bin/pip install --upgrade pip
+
+# Intentar instalar zap-cli y mostrar logs detallados si falla
+RUN /opt/venv/bin/pip install --no-cache-dir git+https://github.com/Grunny/zap-cli.git \
+    && echo "zap-cli instalado correctamente" \
+    || (echo "Fallo en la instalación de zap-cli" && tail -n 20 /root/.local/state/pipx/log/cmd_*.log)
 
 # Verificar la instalación de zap-cli
-RUN /opt/venv/bin/zap-cli --version
+RUN /opt/venv/bin/zap-cli --version || (echo "zap-cli no se pudo ejecutar" && exit 1)
 
 # Crear el directorio de Nginx y clonar el repositorio
 RUN mkdir -p /usr/share/nginx/html
