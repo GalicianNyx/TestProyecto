@@ -1,14 +1,17 @@
 # Usar la imagen base de nginx con Alpine
 FROM nginx:alpine
 
-# Instalar git para poder clonar el repositorio
-RUN apk add --no-cache git
+# Instalar git, gcc y dependencias para compilar paquetes Python
+RUN apk add --no-cache \
+    git \
+    gcc \
+    libc-dev \
+    python3-dev \
+    py3-pip \
+    pipx
 
-# Instalar Python3 y pip para poder instalar zap-cli
-RUN apk add --no-cache python3 py3-pip
-
-# Instalar zap-cli
-RUN pip3 install zap-cli
+# Instalar zap-cli usando pipx
+RUN pipx install zap-cli
 
 # Crear el directorio si no existe
 RUN mkdir -p /usr/share/nginx/html
