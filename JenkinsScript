@@ -1,14 +1,20 @@
 pipeline {
     agent any
 
+    environment {
+        SONAR_HOST_URL = 'http://192.168.1.101:9000'  // URL de tu servidor SonarQube
+        SONAR_PROJECT_KEY = 'TestProyecto'  // La clave del proyecto
+        SONAR_AUTH_TOKEN = 'sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321' // Token de SonarQube
+        ZAP_IMAGE = 'securecodebox/zap'  // Imagen de OWASP ZAP
+    }
+
     stages {
         stage('Clonar Repositorio') {
             steps {
                 script {
                     echo 'Clonando el repositorio desde GitHub...'
                 }
-                git branch: 'main', 
-                    url: 'https://github.com/GalicianNyx/TestProyecto.git'
+                git branch: 'main', url: 'https://github.com/GalicianNyx/TestProyecto.git'
             }
         }
 
@@ -18,11 +24,13 @@ pipeline {
                     echo 'Ejecutando análisis de SonarQube...'
                 }
                 withSonarQubeEnv('Sonar') {
-                    sh 'export PATH=$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin && ' +
-                   'sonar-scanner -Dsonar.projectKey=TestProyecto ' +
-                   '-Dsonar.sources=. ' +
-                   '-Dsonar.host.url=http://192.168.1.101:9000 ' +
-                   '-Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321'
+                    sh """
+                    export PATH=\$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin && 
+                    sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=$SONAR_HOST_URL \
+                    -Dsonar.login=$SONAR_AUTH_TOKEN
+                    """
                 }
             }
         }
@@ -32,8 +40,8 @@ pipeline {
                 script {
                     echo 'Desplegando la aplicación en Docker...'
                     sh '''
-                    docker pull securecodebox/zap
-                    docker run -d -p 9090:8080 securecodebox/zap
+                    docker pull $ZAP_IMAGE
+                    docker run -d -p 9090:8080 --name zap-container $ZAP_IMAGE
                     '''
                 }
             }
@@ -45,7 +53,7 @@ pipeline {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
                 }
                 sh """
-                docker exec -t $(docker ps -q --filter ancestor=securecodebox/zap) zap-cli quick-scan --self-contained http://localhost:9090
+                docker exec -t zap-container zap-cli quick-scan --self-contained http://localhost:9090
                 """
             }
         }
@@ -55,6 +63,17 @@ pipeline {
                 script {
                     echo 'Notificación: Pipeline finalizado.'
                 }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // Limpiar los contenedores Docker después de ejecutar el escaneo
+                echo 'Limpiando contenedores Docker...'
+                sh 'docker stop zap-container'
+                sh 'docker rm zap-container'
             }
         }
     }
