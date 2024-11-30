@@ -19,34 +19,22 @@ pipeline {
                 }
                 withSonarQubeEnv('Sonar') {
                     sh 'export PATH=$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin && ' +
-                    'sonar-scanner -Dsonar.projectKey=TestProyecto ' +
-                    '-Dsonar.sources=. ' +
-                    '-Dsonar.host.url=http://192.168.1.101:9000 ' +
-                    '-Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321'
+                   'sonar-scanner -Dsonar.projectKey=TestProyecto ' +
+                   '-Dsonar.sources=. ' +
+                   '-Dsonar.host.url=http://192.168.1.101:9000 ' +
+                   '-Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321'
                 }
             }
         }
 
-        stage('Desplegar la Aplicación en Docker') {
+        stage('Desplegar la Aplicación con Docker') {
             steps {
                 script {
                     echo 'Desplegando la aplicación en Docker...'
-                    // Construir la imagen del contenedor
-                    sh 'sudo docker build -t despliegue-aplicacion .'
-                    // Ejecutar el contenedor de la aplicación en el puerto 9090
-                    sh 'sudo docker run -d -p 9090:80 despliegue-aplicacion'
-                }
-            }
-        }
-
-     
-
-        stage('Pull de la Imagen de OWASP ZAP') {
-            steps {
-                script {
-                    echo 'Realizando pull de la imagen de OWASP ZAP...'
-                    // Pull de la imagen de OWASP ZAP
-                    sh 'docker pull owasp/zap2docker-stable'
+                    sh '''
+                    docker pull securecodebox/zap
+                    docker run -d -p 9090:8080 securecodebox/zap
+                    '''
                 }
             }
         }
@@ -55,9 +43,10 @@ pipeline {
             steps {
                 script {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
-                    // Ejecutar OWASP ZAP en el contenedor de la aplicación en ejecución (en el puerto 9090)
-                    sh 'docker run --rm --network="host" owasp/zap2docker-stable zap-baseline.py -t http://localhost:9090'
                 }
+                sh """
+                docker exec -t $(docker ps -q --filter ancestor=securecodebox/zap) zap-cli quick-scan --self-contained http://localhost:9090
+                """
             }
         }
 
