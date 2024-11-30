@@ -27,38 +27,14 @@ pipeline {
             }
         }
 
-        stage('Verificar Puerto 9090') {
+        stage('Desplegar la Aplicación en Docker') {
             steps {
                 script {
-                    echo 'Verificando que el puerto 9090 esté libre...'
-                    sh 'netstat -tuln | grep 9090 || true'
-                }
-            }
-        }
-
-        stage('Construir Docker Image') {
-            steps {
-                script {
-                    echo 'Construyendo la imagen de Docker...'
-                    sh 'docker build -t despliegue-aplicacion .'
-                }
-            }
-        }
-
-        stage('Ejecutar Docker Contenedor') {
-            steps {
-                script {
-                    echo 'Ejecutando el contenedor Docker...'
-                    sh 'docker run -d -p 9090:80 despliegue-aplicacion'
-                }
-            }
-        }
-
-        stage('Instalar zap-cli') {
-            steps {
-                script {
-                    echo 'Instalando zap-cli...'
-                    sh 'pip install zap-cli'
+                    echo 'Desplegando la aplicación en Docker...'
+                    // Construir la imagen del contenedor
+                    sh 'sudo docker build -t despliegue-aplicacion .'
+                    // Ejecutar el contenedor de la aplicación en el puerto 9090
+                    sh 'sudo docker run -d -p 9090:80 despliegue-aplicacion'
                 }
             }
         }
@@ -67,10 +43,9 @@ pipeline {
             steps {
                 script {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
+                    // Ejecutar OWASP ZAP en el contenedor en ejecución (en el puerto 9090)
+                    sh 'sudo docker run --rm --network="host" owasp/zap2docker-stable zap-baseline.py -t http://localhost:9090'
                 }
-                sh """
-                zap-cli quick-scan --self-contained http://localhost:9090
-                """
             }
         }
 
