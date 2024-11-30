@@ -3,6 +3,9 @@ FROM nginx:alpine
 # Instalar git para poder clonar el repositorio
 RUN apk add --no-cache git
 
+# Eliminar el contenido predeterminado de nginx
+RUN rm -rf /usr/share/nginx/html/*
+
 # Clonar el repositorio de GitHub público
 RUN git clone https://github.com/GalicianNyx/TestProyecto.git /usr/share/nginx/html
 
