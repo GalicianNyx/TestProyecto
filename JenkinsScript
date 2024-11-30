@@ -39,15 +39,7 @@ pipeline {
             }
         }
 
-        stage('Login en Docker Hub') {
-            steps {
-                script {
-                    echo 'Realizando login en Docker Hub...'
-                    // Comando para hacer login en Docker Hub
-                    sh 'docker login -u galiciannyx -p Albertiot123_+'
-                }
-            }
-        }
+     
 
         stage('Pull de la Imagen de OWASP ZAP') {
             steps {
