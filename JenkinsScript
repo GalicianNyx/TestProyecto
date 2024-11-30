@@ -39,12 +39,32 @@ pipeline {
             }
         }
 
+        stage('Login en Docker Hub') {
+            steps {
+                script {
+                    echo 'Realizando login en Docker Hub...'
+                    // Comando para hacer login en Docker Hub
+                    sh 'docker login -u galiciannyx -p Albertiot123_+'
+                }
+            }
+        }
+
+        stage('Pull de la Imagen de OWASP ZAP') {
+            steps {
+                script {
+                    echo 'Realizando pull de la imagen de OWASP ZAP...'
+                    // Pull de la imagen de OWASP ZAP
+                    sh 'docker pull owasp/zap2docker-stable'
+                }
+            }
+        }
+
         stage('Escaneo de Vulnerabilidades con OWASP ZAP') {
             steps {
                 script {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
-                    // Ejecutar OWASP ZAP en el contenedor en ejecución (en el puerto 9090)
-                    sh 'sudo docker run --rm --network="host" owasp/zap2docker-stable zap-baseline.py -t http://localhost:9090'
+                    // Ejecutar OWASP ZAP en el contenedor de la aplicación en ejecución (en el puerto 9090)
+                    sh 'docker run --rm --network="host" owasp/zap2docker-stable zap-baseline.py -t http://localhost:9090'
                 }
             }
         }
