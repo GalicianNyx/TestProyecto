@@ -18,6 +18,17 @@ pipeline {
             }
         }
 
+        stage('Verificar Conexión con SonarQube') {
+            steps {
+                script {
+                    echo 'Verificando la conexión con el servidor SonarQube...'
+                    sh '''
+                    curl -v $SONAR_HOST_URL
+                    '''
+                }
+            }
+        }
+
         stage('Análisis de Código con SonarQube') {
             steps {
                 script {
