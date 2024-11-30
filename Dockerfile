@@ -1,16 +1,17 @@
 # Usar una imagen base de Python para facilitar la instalación
 FROM python:3.9-slim
 
-# Instalar git
-RUN apt-get update && apt-get install -y git
+# Instalar git y otras dependencias
+RUN apt-get update && apt-get install -y git libmagic1
 
-# Instalar las dependencias necesarias para la instalación de zap-cli
-RUN apt-get install -y libmagic1
+# Crear un entorno virtual
+RUN python3 -m venv /opt/venv
 
-# Clonar zap-cli desde el repositorio de GitHub y luego instalar
-RUN git clone https://github.com/Grunny/zap-cli.git /zap-cli
-WORKDIR /zap-cli
-RUN pip3 install .
+# Activar el entorno virtual y actualizar pip
+RUN /opt/venv/bin/pip install --upgrade pip
+
+# Instalar zap-cli en el entorno virtual
+RUN /opt/venv/bin/pip install git+https://github.com/Grunny/zap-cli.git
 
 # Crear el directorio para Nginx
 RUN mkdir -p /usr/share/nginx/html
