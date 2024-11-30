@@ -5,7 +5,7 @@ FROM nginx:alpine
 RUN apk add --no-cache git
 
 # Clonar el repositorio de GitHub donde se encuentra el HTML
-RUN git clone https://github.com/GalicianNyx/TestProyecto.git /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html && git clone https://github.com/GalicianNyx/TestProyecto.git /usr/share/nginx/html
 
 # Exponer el puerto 9090 donde se ejecutará la aplicación
 EXPOSE 9090
