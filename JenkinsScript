@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONAR_HOST_URL = 'http://192.168.1.101:9000'  // URL de tu servidor SonarQube
+        SONAR_HOST_URL = 'http://192.168.1.101:9000'  // URL de tu servidor SonarQube (asegúrate de usar http://)
         SONAR_PROJECT_KEY = 'TestProyecto'  // La clave del proyecto
         SONAR_AUTH_TOKEN = 'sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321' // Token de SonarQube
         ZAP_IMAGE = 'securecodebox/zap'  // Imagen de OWASP ZAP
