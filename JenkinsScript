@@ -47,7 +47,7 @@ pipeline {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
                 }
                 sh """
-                docker exec -t \$(docker ps -q --filter ancestor=securecodebox/zap) zap-cli quick-scan --self-contained http://localhost:9090
+                docker exec -t \$(docker ps -q --filter ancestor=securecodebox/zap) zap-baseline.py -t http://localhost:9090
                 """
             }
         }
