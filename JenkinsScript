@@ -19,11 +19,11 @@ pipeline {
                 }
                 withSonarQubeEnv('Sonar') {
                     sh '''
-                        export PATH=$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin
-                        sonar-scanner -Dsonar.projectKey=TestProyecto \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://192.168.1.101:9000 \
-                        -Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321
+                    export PATH=$PATH:/opt/sonarscanner/sonar-scanner-6.2.1.4610-linux-x64/bin && 
+                    sonar-scanner -Dsonar.projectKey=TestProyecto \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://192.168.1.101:9000 \
+                    -Dsonar.login=sqa_7fb62898f900b70204fe7fd8b5fba84c3263d321
                     '''
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
                     echo 'Desplegando la aplicación en Docker...'
                     sh '''
                     docker pull securecodebox/zap
-                    docker run -d -p 9090:8080 -v /home/jenkins/owasp_zap_reports:/zap/wrk securecodebox/zap
+                    docker run -d -p 9090:8080 securecodebox/zap
                     '''
                 }
             }
@@ -46,21 +46,9 @@ pipeline {
                 script {
                     echo 'Ejecutando escaneo con OWASP ZAP...'
                 }
-                sh '''
-                    docker exec -t $(docker ps -q --filter ancestor=securecodebox/zap) /zap/zap.sh -cmd -quickurl http://localhost:9090 -quickout /zap/wrk/owasp-zap-report.html
-                '''
-            }
-        }
-
-        stage('Copiar Reporte a la Máquina de Jenkins') {
-            steps {
-                script {
-                    echo 'Copiando reporte de ZAP a la máquina de Jenkins...'
-                    // Copiar el reporte generado por ZAP al directorio local
-                    sh '''
-                        docker cp $(docker ps -q --filter ancestor=securecodebox/zap):/zap/wrk/owasp-zap-report.html /home/jenkins/owasp_zap_reports/
-                    '''
-                }
+                sh """
+                docker exec -t \$(docker ps -q --filter ancestor=securecodebox/zap) zap.sh -cmd -quickurl http://localhost:9090
+                """
             }
         }
 
