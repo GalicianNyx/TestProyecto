@@ -1,19 +1,7 @@
-# Usar la imagen base de nginx con Alpine
-FROM nginx:alpine
+# Usar la imagen base de OWASP ZAP
+FROM owasp/zap2docker-stable
 
-# Instalar git, gcc y dependencias para compilar paquetes Python
-RUN apk add --no-cache \
-    git \
-    gcc \
-    libc-dev \
-    python3-dev \
-    py3-pip \
-    pipx
-
-# Instalar zap-cli usando pipx
-RUN pipx install zap-cli
-
-# Crear el directorio si no existe
+# Crear el directorio para Nginx
 RUN mkdir -p /usr/share/nginx/html
 
 # Asegurarnos de que el directorio está vacío y con permisos adecuados
