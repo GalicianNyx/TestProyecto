@@ -54,6 +54,15 @@ pipeline {
             }
         }
 
+        stage('Instalar zap-cli') {
+            steps {
+                script {
+                    echo 'Instalando zap-cli...'
+                    sh 'pip install zap-cli'
+                }
+            }
+        }
+
         stage('Escaneo de Vulnerabilidades con OWASP ZAP') {
             steps {
                 script {
