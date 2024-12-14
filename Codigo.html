@@ -1,37 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Ejemplo con errores</title>
-    <!-- Error: Meta charset debería estar al principio del head -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <!-- Error: Inline CSS en lugar de usar un archivo externo -->
+    <title>Documentación del Proyecto</title>
     <style>
-        body { background-color: #fff; font-family: Arial; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        main {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+        }
+        .article {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #eaeaea;
+        }
+        h1, h2, h3 {
+            color: #4CAF50;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <!-- Error: Uso de atributos obsoletos como "align" -->
-    <h1 align="center">Bienvenido</h1>
 
-    <!-- Error: Falta el atributo alt en la imagen -->
-    <img src="imagen.jpg">
+<header>
+    <h1>Bienvenidos a la documentación del proyecto</h1>
+</header>
 
-    <!-- Error: Etiqueta no cerrada correctamente -->
-    <p>Este es un párrafo con un enlace
-    <a href="https://ejemplo.com">Visítanos
+<main>
+    <section id="introduccion">
+        <h2>Introducción</h2>
+        <p>Este es un documento que describe el proyecto y su estructura. En este archivo se presentan varios ejemplos con fallos intencionados.</p>
+        <a href="https://www.example.com">Enlace a ejemplo</a>
+        <img src="image.jpg" alt="">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ana</td>
+                    <td>Gómez</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>Juan</td>
+                    <td>Pérez</td>
+                    <td>30</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-    <!-- Error: ID duplicado -->
-    <div id="repetido">Div 1</div>
-    <div id="repetido">Div 2</div>
+    <section id="proyecto">
+        <h2>Detalles del Proyecto</h2>
+        <p>El proyecto está diseñado para ilustrar cómo se pueden generar errores en el código. Los siguientes ejemplos muestran prácticas incorrectas y problemas comunes en HTML, CSS y JavaScript.</p>
+        
+        <h3>Subsección 1</h3>
+        <p>Descripción del problema 1.</p>
+        <img src="example1.jpg">
+        
+        <h3>Subsección 2</h3>
+        <p>Descripción del problema 2.</p>
+        <input type="text" value="Texto inicial">
+        <button>Botón sin acción</button>
 
-    <!-- Error: Uso incorrecto de etiquetas -->
-    <ul>
-        <li>Elemento de lista mal cerrado
-        <li>Otro elemento
-    </ul>
+        <h3>Subsección 3</h3>
+        <p>Descripción del problema 3.</p>
+        <ul>
+            <li>Elemento 1</li>
+            <li>Elemento 2</li>
+        </ul>
 
-    <!-- Error: JavaScript inline no recomendado -->
-    <button onclick="alert('¡Hola!');">Click aquí</button>
+        <h3>Subsección 4</h3>
+        <p>Descripción del problema 4.</p>
+        <a href="http://www.sitio.com">Enlace sin destino seguro</a>
+    </section>
+
+    <section id="codigo">
+        <h2>Fragmentos de código con errores</h2>
+        <pre>
+            <code>
+                &lt;div&gt;
+                    &lt;p&gt;Este es un párrafo con error&lt;/p&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;Item 1&lt;/li&gt;
+                        &lt;li&gt;Item 2&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            </code>
+        </pre>
+
+        <h3>Fragmento de JavaScript incorrecto</h3>
+        <pre>
+            <code>
+                var x = 10;
+                if (x == 10) {
+                    console.log("El valor de x es 10);
+                }
+            </code>
+        </pre>
+
+        <h3>Formulario sin etiquetas de acceso</h3>
+        <form>
+            <input type="text" value="Texto sin label" />
+            <input type="submit" value="Enviar" />
+        </form>
+    </section>
+
+    <section id="errores">
+        <h2>Errores Comunes</h2>
+        <p>Algunos de los errores comunes incluyen el uso incorrecto de elementos HTML, como etiquetas mal cerradas, atributos innecesarios o mal ubicados, y prácticas no recomendadas de accesibilidad.</p>
+        <p>La accesibilidad y la semántica son muy importantes para crear un código inclusivo y fácil de usar.</p>
+
+        <p>Este documento está lleno de ejemplos para demostrar cómo estas malas prácticas pueden afectar el rendimiento y la experiencia del usuario.</p>
+
+        <h3>Ejemplo 1: Uso Incorrecto de <code>&lt;div&gt;</code></h3>
+        <div>
+            <h3>Subtítulo con una estructura incorrecta</h3>
+            <p>Texto del párrafo</p>
+        </div>
+
+        <h3>Ejemplo 2: Formulario sin etiquetas de acceso</h3>
+        <form>
+            <input type="text" name="name" placeholder="Tu nombre">
+            <input type="email" name="email" placeholder="Tu email">
+            <button>Enviar</button>
+        </form>
+        
+        <h3>Ejemplo 3: Elementos HTML mal formateados</h3>
+        <span>Texto que no está correctamente anidado</span><br />
+        <p>Más texto sin el formato adecuado</p>
+
+        <h3>Ejemplo 4: Código JavaScript con variables no declaradas</h3>
+        <script>
+            var myVar = 10;
+            if (myVar > 5) {
+                alert('Variable correcta');
+            }
+            alert(value);
+        </script>
+
+        <h3>Ejemplo 5: Enlaces sin destino seguro</h3>
+        <a href="http://www.inseguro.com">Enlace no seguro</a>
+
+        <h3>Ejemplo 6: Imágenes sin texto alternativo</h3>
+        <img src="imagen2.jpg">
+        <img src="imagen3.jpg">
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <p>Si tienes alguna pregunta sobre los errores que estamos demostrando en este documento, no dudes en ponerte en contacto con nosotros a través del siguiente formulario.</p>
+        <form>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre">
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Escribe tu mensaje"></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Proyecto de Pruebas</p>
+</footer>
+
+<script>
+    document.getElementById("btnClick").addEventListener("click", function() {
+        alert("Botón presionado!");
+    });
+
+    var y;
+    y = 15;
+    console.log("El valor de y es " + y);
+</script>
+
 </body>
 </html>
